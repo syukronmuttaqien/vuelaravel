@@ -55,12 +55,12 @@
         }
       },
       created() {
-      let uri = 'http://127.0.0.1:8000/api/posts';
-      this.axios.get(uri).then(response => {
-        this.posts = response.data.data;
-        console.log('terpanggil')
-      }).catch(error => console.log({error}));
-    },
+        let uri = 'http://127.0.0.1:8000/api/posts';
+        this.axios.get(uri).then(response => {
+          this.posts = response.data.data;
+          console.log('terpanggil')
+        }).catch(error => console.log({error}));
+      },
     methods: {
       deletePost(id_data)
       {

@@ -7,9 +7,17 @@ Vue.use(VueRouter);
 
 import VueAxios from 'vue-axios';
 import axios from 'axios';
+import HighchartsVue from 'highcharts-vue'; // <--- Nambah ini
+import moment from 'moment'; // <---- Nambah Ini
 
 import App from './App.vue';
 Vue.use(VueAxios, axios);
+Vue.use(HighchartsVue) // <--- Plugin Highchart untuk vue;
+Vue.prototype.moment = moment // <--- Plugin Moment, untuk format tanggal bentukan dari internetnya gini;
+
+// Sebelum Pake Plugin diatas install plugin nya dulu lewat npm (console)
+// npm install highcharts-vue --save
+// nmp install moment --save
 
 import HomeComponent from './components/HomeComponent.vue';
 import CreateComponent from './components/CreateComponent.vue';

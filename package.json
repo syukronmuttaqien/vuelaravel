@@ -24,6 +24,9 @@
         "vue-template-compiler": "^2.6.6"
     },
     "dependencies": {
+        "highcharts": "^7.0.3", 
+        "highcharts-vue": "^1.2.0",
+        "moment": "^2.24.0",
         "vue-axios": "^2.1.4",
         "vue-router": "^3.0.2"
     }
