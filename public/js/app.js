@@ -1891,21 +1891,40 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       var uri = 'http://127.0.0.1:8000/api/post/create';
-      console.log({
-        posts: this.post
-      });
-      this.axios.post(uri, this.post).then(function (response) {
-        _this.$router.push({
-          name: 'posts'
+      var formData = new FormData();
+      formData.append("title", this.post.title);
+      formData.append("date_created", this.post.date_created);
+      formData.append("description", this.post.description);
+      formData.append("keywords", this.post.keywords);
+      formData.append("data_source", this.post.data_source);
+      formData.append("articles", this.post.articles);
+      formData.append("uploadedFile", this.post.uploadedFile);
+      this.axios.post(uri, formData).then(function (response) {
+        console.log({
+          response: response
         });
+
+        if (response.data.status == 0) {
+          // this.$router.push({name: 'posts'});
+          alert('File Belum Dipilih');
+        } else {
+          _this.$router.push({
+            name: 'posts'
+          });
+        }
       }).catch(function (error) {
         return console.log({
           error: error
         });
       });
     },
-    previewFiles: function previewFiles(event) {
-      this.post.file = event.target.files;
+    onChangeFile: function onChangeFile() {
+      var formData = new FormData();
+      this.post.uploadedFile = this.$refs.datasource.files[0];
+      formData.append("uploadedFile", this.post.uploadedFile);
+      console.log({
+        post: this.post
+      });
     }
   }
 });
@@ -56961,7 +56980,7 @@ var render = function() {
                         }
                       ],
                       staticClass: "form-control",
-                      attrs: { type: "date" },
+                      attrs: { type: "date", required: "" },
                       domProps: { value: _vm.post.date_created },
                       on: {
                         input: function($event) {
@@ -56995,7 +57014,7 @@ var render = function() {
                         }
                       ],
                       staticClass: "form-control",
-                      attrs: { type: "text" },
+                      attrs: { type: "text", required: "" },
                       domProps: { value: _vm.post.title },
                       on: {
                         input: function($event) {
@@ -57025,7 +57044,7 @@ var render = function() {
                         }
                       ],
                       staticClass: "form-control",
-                      attrs: { rows: "5" },
+                      attrs: { required: "", rows: "5" },
                       domProps: { value: _vm.post.description },
                       on: {
                         input: function($event) {
@@ -57055,7 +57074,7 @@ var render = function() {
                         }
                       ],
                       staticClass: "form-control",
-                      attrs: { type: "text" },
+                      attrs: { type: "text", required: "" },
                       domProps: { value: _vm.post.keywords },
                       on: {
                         input: function($event) {
@@ -57076,8 +57095,9 @@ var render = function() {
                   _vm._v(" "),
                   _c("td", [
                     _c("input", {
-                      attrs: { type: "file" },
-                      on: { change: _vm.previewFiles }
+                      ref: "datasource",
+                      attrs: { type: "file", required: "" },
+                      on: { change: _vm.onChangeFile }
                     })
                   ])
                 ]),
@@ -57098,7 +57118,7 @@ var render = function() {
                         }
                       ],
                       staticClass: "form-control",
-                      attrs: { rows: "5" },
+                      attrs: { required: "", rows: "5" },
                       domProps: { value: _vm.post.articles },
                       on: {
                         input: function($event) {

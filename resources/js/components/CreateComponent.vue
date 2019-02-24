@@ -22,32 +22,32 @@
               <tr>
                 <td>Date</td>
                 <td> : </td>
-                <td><input type="date" class="form-control" v-model="post.date_created"></td>
+                <td><input type="date" required class="form-control" v-model="post.date_created"></td>
               </tr>
               <tr>
                 <td>Title</td>
                 <td> : </td>
-                <td><input type="text" class="form-control" v-model="post.title"></td>
+                <td><input type="text" required class="form-control" v-model="post.title"></td>
               </tr>
               <tr>
                 <td>Description</td>
                 <td> : </td>
-                <td><textarea class="form-control" v-model="post.description" rows="5"></textarea></td>
+                <td><textarea required class="form-control" v-model="post.description" rows="5"></textarea></td>
               </tr>
               <tr>
                 <td>Keyword</td>
                 <td> : </td>
-                <td><input type="text" class="form-control" v-model="post.keywords"></td>
+                <td><input type="text" required class="form-control" v-model="post.keywords"></td>
               </tr>
               <tr>
                 <td>Data Source</td>
                 <td> : </td>
-                <td><input type="file" @change="previewFiles"></td>
+                <td><input type="file" required ref="datasource" @change="onChangeFile"></td>
               </tr>
               <tr>
                 <td>Articles</td>
                 <td>:</td>
-                <td><textarea class="form-control" v-model="post.articles" rows="5"></textarea></td>
+                <td><textarea class="form-control" required v-model="post.articles" rows="5"></textarea></td>
               </tr>
             </table>
           </div>
@@ -70,13 +70,30 @@
     methods: {
       addPost(){
         let uri = 'http://127.0.0.1:8000/api/post/create';
-        console.log({posts: this.post});
-        this.axios.post(uri, this.post).then((response) => {
-        this.$router.push({name: 'posts'});
+        const formData = new FormData();
+        formData.append("title", this.post.title);
+        formData.append("date_created", this.post.date_created);
+        formData.append("description", this.post.description);
+        formData.append("keywords", this.post.keywords);
+        formData.append("data_source", this.post.data_source);
+        formData.append("articles", this.post.articles);
+        formData.append("uploadedFile", this.post.uploadedFile)
+        this.axios.post(uri, formData).then((response) => {
+        
+        console.log({response});
+        if (response.data.status == 0) {
+        // this.$router.push({name: 'posts'});
+          alert('File Belum Dipilih');
+        } else {
+          this.$router.push({name: 'posts'});
+        }
         }).catch(error => console.log({error}));
       },
-      previewFiles(event) {
-        this.post.file = event.target.files;
+      onChangeFile() {
+        const formData = new FormData();
+        this.post.uploadedFile = this.$refs.datasource.files[0];
+        formData.append("uploadedFile", this.post.uploadedFile);
+        console.log({ post: this.post })
       }
     }
   }
